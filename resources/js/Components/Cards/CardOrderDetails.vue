@@ -18,9 +18,9 @@
                 </button>
             </div>
         </div>
-        <div class="flex flex-col overflow-x-auto px-4 py-10 pt-0 lg:px-10">
+        <div class=" px-4 py-10 pt-0 lg:px-10">
             <table
-                class="w-full min-w-0 border-collapse items-center divide-y divide-gray-300 break-words rounded-lg"
+                class="w-full min-w-0 border-collapse items-center divide-y divide-gray-300 rounded-lg"
             >
                 <tbody class="divide-y divide-gray-300 bg-white">
                     <tr class="whitespace-nowrap">
@@ -39,7 +39,7 @@
                             </div>
                         </td>
                     </tr>
-                    <tr class="whitespace-nowrap">
+                    <tr class="">
                         <td class="px-6 py-4">
                             <div class="text-sm text-gray-500">
                                 <h3
@@ -50,8 +50,8 @@
                             </div>
                         </td>
                         <td class="px-6 py-4">
-                            <div class="text-sm text-gray-500">
-                                {{ order_details.paper_instruction }}
+                            <div class="text-sm text-gray-500" v-html="order_details.paper_instruction">
+                                
                             </div>
                         </td>
                     </tr>

@@ -31,13 +31,14 @@
 
                         <div class="mt-12">
                             <a
-                                href="#" v-scroll-to="'#element'"
+                                href="#"
+                                v-scroll-to="'#element'"
                                 class="get-started mr-1 mb-1 rounded bg-emerald-500 px-6 py-4 text-sm font-bold uppercase text-white shadow outline-none transition-all duration-150 ease-linear hover:shadow-lg focus:outline-none active:bg-emerald-600"
                             >
                                 Get started
                             </a>
                             <a
-                                href="expertwriters.linsure.co.ke"
+                                href="http://expertwriters.thetradinghut.net/"
                                 class="github-star ml-1 mr-1 mb-1 rounded bg-blueGray-700 px-6 py-4 text-sm font-bold uppercase text-white shadow outline-none transition-all duration-150 ease-linear hover:shadow-lg focus:outline-none active:bg-blueGray-600"
                                 target="_blank"
                             >
@@ -293,7 +294,7 @@
             </div>
         </section>
 
-        <section class="relative bg-blueGray-200 pb-16 pt-32" >
+        <section class="relative bg-blueGray-200 pb-16 pt-32">
             <div
                 class="absolute top-0 bottom-auto left-0 right-0 -mt-20 h-20 w-full"
                 style="transform: translateZ(0)"
@@ -333,13 +334,45 @@
                             writing business today!
                         </p>
                         <div class="mt-10 flex flex-col sm:block">
-                            <a
-                                href="https://www.creative-tim.com/learning-lab/tailwind/vue/overview/notus?ref=vn-index"
-                                target="_blank"
-                                class="get-started mr-1 mb-2 rounded bg-emerald-500 px-6 py-4 text-sm font-bold uppercase text-white shadow outline-none transition-all duration-150 ease-linear hover:shadow-lg focus:outline-none active:bg-emerald-600"
+                            <div
+                                v-if="showSuccess"
+                                class="relative mx-auto mb-4 flex rounded-lg border border-teal-400 bg-teal-100 p-4 px-4 py-3 dark:bg-teal-200 sm:max-w-full sm:px-6 md:max-w-[75%] lg:max-w-[75%] lg:px-8"
+                                role="alert"
                             >
-                                Get started
-                            </a>
+                                <svg
+                                    class="h-5 w-5 text-teal-700 dark:text-teal-800"
+                                    fill="currentColor"
+                                    viewBox="0 0 20 20"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                >
+                                    <path
+                                        fill-rule="evenodd"
+                                        d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"
+                                        clip-rule="evenodd"
+                                    ></path>
+                                </svg>
+
+                                <span class="ml-4 block sm:inline"> 
+                                    {{successMessage}}
+                                </span>
+                                <!-- <span
+                                    class="absolute top-0 bottom-0 right-0 px-4 py-3"
+                                >
+                                    <svg
+                                        class="h-6 w-6 fill-current text-teal-500"
+                                        role="button"
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        viewBox="0 0 20 20"
+                                        @click="closeBox()"
+                                    >
+                                        <title>Close</title>
+                                        <path
+                                            d="M14.348 14.849a1.2 1.2 0 0 1-1.697 0L10 11.819l-2.651 3.029a1.2 1.2 0 1 1-1.697-1.697l2.758-3.15-2.759-3.152a1.2 1.2 0 1 1 1.697-1.697L10 8.183l2.651-3.031a1.2 1.2 0 1 1 1.697 1.697l-2.758 3.152 2.758 3.15a1.2 1.2 0 0 1 0 1.698z"
+                                        />
+                                    </svg>
+                                </span> -->
+                            </div>
+                            <div id="paypal-button-container"></div>
                         </div>
                         <div class="mt-16 text-center"></div>
                     </div>
@@ -349,7 +382,7 @@
         <footer-component />
     </div>
 </template>
-<script>
+<script setup>
 import IndexNavbar from "@/components/Navbars/IndexNavbar.vue";
 import FooterComponent from "@/components/Footers/Footer.vue";
 
@@ -365,25 +398,68 @@ import login from "@/assets/img/login.jpg";
 import home from "@/assets/img/home.jpg";
 import admin from "@/assets/img/admin.jpg";
 
-export default {
-    data() {
-        return {
-            patternVue,
-            componentBtn,
-            componentProfileCard,
-            componentInfoCard,
-            componentInfo2,
-            componentMenu,
-            componentBtnPink,
-            documentation,
-            login,
-            home,
-            admin,
-        };
-    },
-    components: {
-        IndexNavbar,
-        FooterComponent,
-    },
+import { ref } from "vue";
+
+const showSuccess = ref(false);
+
+const successMessage = ref("");
+
+const closeBox = () => {
+    showSuccess.value = !showSuccess.value;
 };
+
+const initPayPalButton = () => {
+    paypal
+        .Buttons({
+            // Sets up the transaction when a payment button is clicked
+            createOrder: function (data, actions) {
+                return actions.order.create({
+                    purchase_units: [
+                        {
+                            amount: {
+                                value: "150", // Can reference variables or functions. Example: `value: document.getElementById('...').value`
+                            },
+                        },
+                    ],
+                });
+            },
+
+            // Finalize the transaction after payer approval
+            onApprove: function (data, actions) {
+                return actions.order.capture().then(function (orderData) {
+                    // Successful capture! For dev/demo purposes:
+                    console.log(
+                        "Capture result",
+                        orderData,
+                        JSON.stringify(orderData, null, 2)
+                    );
+                    var transaction =
+                        orderData.purchase_units[0].payments.captures[0];
+                    // alert(
+                    //     "Transaction " +
+                    //         transaction.status +
+                    //         ": " +
+                    //         transaction.id +
+                    //         "\n\nSee console for all available details"
+                    // );
+
+                    // When ready to go live, remove the alert and show a success message within this page. For example:
+                    // var element = document.getElementById('paypal-button-container');
+                    // element.innerHTML = '';
+                    // element.innerHTML = '<h3>Thank you for your payment!</h3>';
+                    // Or go to another URL:  actions.redirect('thank_you.html');
+                    showSuccess.value = !showSuccess.value;
+                    successMessage.value =
+                        "Thank you for your purchase. We will send you a link to the download files to the email you used to make the payment within the hour. Transaction " + transaction.status + " Transaction ID: " + transaction.id;
+                });
+            },
+        })
+        .render("#paypal-button-container");
+};
+
+const script = document.createElement("script");
+script.src =
+    "https://www.paypal.com/sdk/js?client-id=ASJXre1kgOveI7i5PbEvqvOs9fptu9-eTDd9N-ktigW5mTbtXFhvGBP4rIjN0HV2Pb-x9g_W_qPekdD6&enable-funding=venmo&currency=USD";
+script.addEventListener("load", initPayPalButton);
+document.body.appendChild(script);
 </script>

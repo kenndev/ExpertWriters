@@ -20,7 +20,7 @@
             >
                 <img
                                     alt="..."
-                                    class="h-auto max-w-full rounded-lg border-none align-middle"
+                                    class="scale-100h-auto max-w-full rounded-lg border-none align-middle"
                                     :src="home"
                                 />
             </BreezeNavLink>

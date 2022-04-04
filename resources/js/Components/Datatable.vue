@@ -3,7 +3,7 @@
         <thead>
             <tr>
                 <th
-                    class="whitespace-nowrap border border-l-0 border-r-0 border-solid px-6 py-3 text-left align-middle text-xs font-semibold uppercase"
+                    class=" border border-l-0 border-r-0 border-solid px-6 py-3 text-left align-middle text-xs font-semibold uppercase"
                     :class="[
                         color === 'light'
                             ? 'border-blueGray-100 bg-blueGray-50 text-blueGray-500'
@@ -82,10 +82,10 @@
         <tbody>
             <tr v-for="order in tableData" :key="order.id">
                 <td
-                    class="flex items-center whitespace-nowrap border-t-0 border-l-0 border-r-0 p-4 px-6 text-left align-middle text-xs"
+                    class="border-t-0 border-l-0 border-r-0 p-4 text-left text-xs"
                 >
                     <span
-                        class="ml-3 font-bold"
+                        class="font-bold"
                         :class="[
                             color === 'light'
                                 ? 'text-blueGray-600'
